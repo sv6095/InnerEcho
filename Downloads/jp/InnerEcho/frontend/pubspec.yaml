@@ -1,0 +1,36 @@
+name: flutter_breath_app
+description: "A Flutter application for breathing exercises and meditation."
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.5.0 <4.0.0"  # Ensure Dart and Flutter compatibility
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  youtube_player_iframe: ^5.2.0  # Keep youtube_player_iframe at 5.2.0
+  http: ^1.2.0
+  shared_preferences: ^2.2.2
+  cupertino_icons: ^1.0.6
+  webview_flutter: ^4.9.0  # Downgrade to a version compatible with youtube_player_iframe
+  google_generative_ai: ^0.4.6
+  audioplayers: ^6.1.0
+
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+  generate: true
+
+  assets:
+    - assets/images/

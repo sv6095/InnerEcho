@@ -1,0 +1,23 @@
+allprojects {
+    repositories {
+        google()        // Google's repository
+        mavenCentral()  // Maven Central repository
+    }
+}
+
+// Define a custom build directory at the root level.
+rootProject.buildDir = "../build"
+
+// Configure all subprojects.
+subprojects {
+    // Set the build directory for each subproject based on the root build directory.
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+    
+    // Ensure that the ':app' project is evaluated before any other subproject.
+    project.evaluationDependsOn(":app")
+}
+
+// Define a task to clean up the build directory.
+tasks.register("clean", Delete) {
+    delete rootProject.buildDir
+}
