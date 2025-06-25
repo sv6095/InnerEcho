@@ -1,26 +1,46 @@
-# Mark generated files
-android/* linguist-generated=true
-ios/* linguist-generated=true
-windows/* linguist-generated=true
-linux/* linguist-generated=true
-macos/* linguist-generated=true
-web/* linguist-generated=true
+# Mark all platform-specific directories as generated code
+android/** linguist-generated=true
+ios/** linguist-generated=true
+windows/** linguist-generated=true
+linux/** linguist-generated=true
+macos/** linguist-generated=true
+web/** linguist-generated=true
+
+# Explicitly exclude C and C++ files from language statistics
+*.c linguist-detectable=false
+*.cpp linguist-detectable=false
+*.cc linguist-detectable=false
+*.h linguist-detectable=false
+*.hpp linguist-detectable=false
 
 # Mark vendored code
 **/third_party/** linguist-vendored=true
+**/vendor/** linguist-vendored=true
+**/external/** linguist-vendored=true
 
 # Explicitly mark Dart files as Dart
 *.dart linguist-language=Dart
+*.dart linguist-detectable=true
 
 # Explicitly mark Java files as Java
 *.java linguist-language=Java
+*.java linguist-detectable=true
 
 # Exclude build files from language statistics
 *.cmake linguist-detectable=false
 CMakeLists.txt linguist-detectable=false
 Makefile linguist-detectable=false
 *.mk linguist-detectable=false
+*.gradle linguist-detectable=false
+*.podspec linguist-detectable=false
+*.pbxproj linguist-detectable=false
 
 # Exclude generated files
 *.g.dart linguist-generated=true
-*.freezed.dart linguist-generated=true 
+*.freezed.dart linguist-generated=true
+**/GeneratedPluginRegistrant.* linguist-generated=true
+
+# Documentation
+*.md linguist-documentation=true
+*.txt linguist-documentation=true
+LICENSE linguist-documentation=true 
