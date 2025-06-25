@@ -1,0 +1,2 @@
+C:/projects/Mental-Health-App/frontend/android/app/.cxx/Debug/1p3q125c/armeabi-v7a/CMakeFiles/edit_cache.dir
+C:/projects/Mental-Health-App/frontend/android/app/.cxx/Debug/1p3q125c/armeabi-v7a/CMakeFiles/rebuild_cache.dir

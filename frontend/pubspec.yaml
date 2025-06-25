@@ -1,5 +1,5 @@
-name: flutter_breath_app
-description: "A Flutter application for breathing exercises and meditation."
+name: InnerEcho
+description: "A application for breathing exercises and meditation caring mental health."
 
 publish_to: 'none'
 
@@ -17,16 +17,15 @@ dependencies:
   http: ^1.2.0
   shared_preferences: ^2.2.2
   cupertino_icons: ^1.0.6
-  webview_flutter: ^4.9.0  # Downgrade to a version compatible with youtube_player_iframe
+  webview_flutter: ^4.9.0  # Compatible with youtube_player_iframe
   google_generative_ai: ^0.4.6
   audioplayers: ^6.1.0
-
-
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
+  flutter_launcher_icons: ^0.13.1  # Use the latest version
 
 flutter:
   uses-material-design: true
@@ -34,3 +33,11 @@ flutter:
 
   assets:
     - assets/images/
+
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/app_logo.png"
+  adaptive_icon_foreground: "assets/images/app_logo.png"
+  adaptive_icon_background: "#ffffff"

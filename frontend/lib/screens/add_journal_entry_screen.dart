@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'journal_service.dart';
+import '../services/journal_service.dart';
 
 class AddJournalEntryScreen extends StatefulWidget {
   final String? initialTitle;
@@ -20,6 +20,7 @@ class _AddJournalEntryScreenState extends State<AddJournalEntryScreen> {
   late String body;
   List<String> tags = [];
   final _formKey = GlobalKey<FormState>();
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -69,6 +70,40 @@ class _AddJournalEntryScreenState extends State<AddJournalEntryScreen> {
     );
   }
 
+  Future<void> _saveJournalEntry() async {
+    if (_formKey.currentState?.validate() ?? false) {
+      setState(() {
+        _isLoading = true;
+      });
+
+      try {
+        final entry = JournalEntry(
+          title: title,
+          body: body,
+          tags: tags,
+          date: DateTime.now(),
+        );
+
+        final savedEntry = await JournalService.addJournalEntry(entry);
+        if (!mounted) return;
+        
+        Navigator.pop(context, savedEntry);
+      } catch (e) {
+        if (!mounted) return;
+        
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error saving entry: ${e.toString()}')),
+        );
+      } finally {
+        if (mounted) {
+          setState(() {
+            _isLoading = false;
+          });
+        }
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -112,29 +147,17 @@ class _AddJournalEntryScreenState extends State<AddJournalEntryScreen> {
                 _buildTagsField(),
                 const SizedBox(height: 16.0),
                 ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState?.validate() ?? false) {
-                      final now = DateTime.now();
-                      Navigator.pop(
-                        context,
-                        JournalEntry(
-                          title: title,
-                          body: body,
-                          tags: tags,
-                          date: now,
-                          id: DateTime.now().millisecondsSinceEpoch.toString(),
-                        ),
-                      );
-                    }
-                  },
+                  onPressed: _isLoading ? null : _saveJournalEntry,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.black,
                     padding: const EdgeInsets.symmetric(vertical: 12),
                   ),
-                  child: const Text(
-                    'Save Entry',
-                    style: TextStyle(color: Colors.white),
-                  ),
+                  child: _isLoading
+                      ? const CircularProgressIndicator(color: Colors.white)
+                      : const Text(
+                          'Save Entry',
+                          style: TextStyle(color: Colors.white),
+                        ),
                 ),
               ],
             ),

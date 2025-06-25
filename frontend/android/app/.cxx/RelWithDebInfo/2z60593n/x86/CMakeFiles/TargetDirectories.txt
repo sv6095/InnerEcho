@@ -1,0 +1,2 @@
+C:/projects/Mental-Health-App/frontend/android/app/.cxx/RelWithDebInfo/2z60593n/x86/CMakeFiles/edit_cache.dir
+C:/projects/Mental-Health-App/frontend/android/app/.cxx/RelWithDebInfo/2z60593n/x86/CMakeFiles/rebuild_cache.dir

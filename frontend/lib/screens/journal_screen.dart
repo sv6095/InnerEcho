@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'add_journal_entry_screen.dart';
-import 'journal_service.dart'; // MongoDB service for database operations
+import '../services/journal_service.dart';
 
 class JournalScreen extends StatefulWidget {
   const JournalScreen({super.key});
@@ -21,20 +21,28 @@ class _JournalScreenState extends State<JournalScreen> {
 
   // Loads journal entries from MongoDB using JournalService and updates the state
   Future<void> _loadJournalEntries() async {
+    setState(() {
+      isLoading = true;
+    });
+    
     try {
       final journalEntries = await JournalService.getJournalEntries();
-      setState(() {
-        entries = journalEntries;
-        isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          entries = journalEntries;
+          isLoading = false;
+        });
+      }
     } catch (e) {
-      setState(() {
-        isLoading = false;
-      });
-      // Show an error message (optional)
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to load entries: $e')),
-      );
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+        // Show an error message
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to load entries: $e')),
+        );
+      }
     }
   }
 
@@ -47,24 +55,27 @@ class _JournalScreenState extends State<JournalScreen> {
         backgroundColor: Colors.black,
         iconTheme: const IconThemeData(color: Colors.white),
       ),
-      body: isLoading
-          ? const Center(child: CircularProgressIndicator()) // Show loading indicator
-          : Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Text(
-                    'You have ${entries.length} entries',
-                    style: const TextStyle(fontSize: 18, color: Colors.black),
+      body: RefreshIndicator(
+        onRefresh: _loadJournalEntries,
+        child: isLoading
+            ? const Center(child: CircularProgressIndicator()) // Show loading indicator
+            : Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(
+                      'You have ${entries.length} entries',
+                      style: const TextStyle(fontSize: 18, color: Colors.black),
+                    ),
                   ),
-                ),
-                Expanded(
-                  child: entries.isEmpty
-                      ? _buildEmptyState()
-                      : _buildJournalList(),
-                ),
-              ],
-            ),
+                  Expanded(
+                    child: entries.isEmpty
+                        ? _buildEmptyState()
+                        : _buildJournalList(),
+                  ),
+                ],
+              ),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _addJournalEntry(context),
         backgroundColor: Colors.black,
@@ -107,7 +118,7 @@ class _JournalScreenState extends State<JournalScreen> {
           color: Colors.white,
           child: ListTile(
             title: Text(
-              entry.title ?? 'Untitled Entry',  // Provide default value for title
+              entry.title,
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
@@ -118,22 +129,42 @@ class _JournalScreenState extends State<JournalScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  entry.body ?? 'No content provided.',  // Default if body is null
+                  entry.body,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(fontSize: 16, color: Colors.black),
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'Date: ${entry.date?.toLocal().toString().split(' ')[0] ?? 'No date available'}',
+                  'Date: ${entry.date.toLocal().toString().split(' ')[0]}',
                   style: const TextStyle(color: Colors.grey),
+                ),
+                if (entry.tags.isNotEmpty)
+                  Wrap(
+                    spacing: 6.0,
+                    children: entry.tags.map((tag) => Chip(
+                      label: Text(tag),
+                      labelStyle: const TextStyle(fontSize: 10),
+                      padding: EdgeInsets.zero,
+                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    )).toList(),
+                  ),
+              ],
+            ),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.edit, color: Colors.blue),
+                  onPressed: () => _editJournalEntry(entry),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.delete, color: Colors.red),
+                  onPressed: () => _deleteJournalEntry(entry.id!),
                 ),
               ],
             ),
-            trailing: IconButton(
-              icon: const Icon(Icons.delete, color: Colors.red),
-              onPressed: () => _deleteJournalEntry(entry.id),
-            ),
+            isThreeLine: true,
           ),
         );
       },
@@ -146,15 +177,45 @@ class _JournalScreenState extends State<JournalScreen> {
       context,
       MaterialPageRoute(builder: (context) => const AddJournalEntryScreen()),
     );
+    
     if (result != null && result is JournalEntry) {
-      await JournalService.addJournalEntry(result);
       _loadJournalEntries(); // Reload entries after adding a new one
     }
   }
+  
+  // Opens AddJournalEntryScreen with existing entry data for editing
+  Future<void> _editJournalEntry(JournalEntry entry) async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AddJournalEntryScreen(
+          initialTitle: entry.title,
+          initialBody: entry.body,
+        ),
+      ),
+    );
+    
+    if (result != null && result is JournalEntry) {
+      try {
+        await JournalService.updateJournalEntry(entry.id!, result);
+        _loadJournalEntries(); // Reload entries after updating
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to update entry: $e')),
+        );
+      }
+    }
+  }
 
-  // Deletes a journal entry from MongoDB and reloads the entries
+  // Deletes a journal entry and reloads the entries
   Future<void> _deleteJournalEntry(String id) async {
-    await JournalService.deleteJournalEntry(id);
-    _loadJournalEntries(); // Reload entries after deletion
+    try {
+      await JournalService.deleteJournalEntry(id);
+      _loadJournalEntries(); // Reload entries after deletion
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to delete entry: $e')),
+      );
+    }
   }
 }
