@@ -1,0 +1,26 @@
+# Mark generated files
+android/* linguist-generated=true
+ios/* linguist-generated=true
+windows/* linguist-generated=true
+linux/* linguist-generated=true
+macos/* linguist-generated=true
+web/* linguist-generated=true
+
+# Mark vendored code
+**/third_party/** linguist-vendored=true
+
+# Explicitly mark Dart files as Dart
+*.dart linguist-language=Dart
+
+# Explicitly mark Java files as Java
+*.java linguist-language=Java
+
+# Exclude build files from language statistics
+*.cmake linguist-detectable=false
+CMakeLists.txt linguist-detectable=false
+Makefile linguist-detectable=false
+*.mk linguist-detectable=false
+
+# Exclude generated files
+*.g.dart linguist-generated=true
+*.freezed.dart linguist-generated=true 
