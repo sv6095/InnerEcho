@@ -225,7 +225,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Contact
 
-Project Link: [https://github.com/yourusername/Mental-Health-App](https://github.com/yourusername/Mental-Health-App)
+Project Link: [https://github.com/sv6095/Mental-Health-App](https://github.com/sv6095/Mental-Health-App)
 
 ---
 
