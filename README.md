@@ -1,4 +1,4 @@
-# Mental Health App
+#(INNERECHO) Mental Health App
 
 A comprehensive mental health application designed to help users manage their mental wellbeing through various features including mood tracking, journaling, meditation exercises, breathing techniques, and AI-powered support.
 
