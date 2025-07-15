@@ -68,7 +68,7 @@ Our goal is to make mental health support accessible to everyone through technol
 
 ## Screenshots
 
-*(Placeholder for app screenshots)*
+
 
 ## Tech Stack
 
