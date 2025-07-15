@@ -72,7 +72,10 @@ Our goal is to make mental health support accessible to everyone through technol
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/2bf57845-7f79-459b-9619-6b6b89aab0b2" />
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/aaed1a62-8346-4b05-9f60-e71c48f25bad" />
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/3207f58c-8efd-4681-8cb9-ee248c135237" />
-<img width="300" alt="image" src="https://github.com/user-attachments/assets/3aadb40e-d2a3-46f6-9e0a-1d13164bc0b6" />
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/210dfd8a-a8f8-47b3-8c66-72cc7077b8aa" />
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/75bf5fa5-2488-42ad-8919-6c4a98235f5d" />
+
+
 
 
 
