@@ -74,7 +74,8 @@ Our goal is to make mental health support accessible to everyone through technol
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/3207f58c-8efd-4681-8cb9-ee248c135237" />
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/210dfd8a-a8f8-47b3-8c66-72cc7077b8aa" />
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/75bf5fa5-2488-42ad-8919-6c4a98235f5d" />
-![InnerEcho Screenshot](frontend/assets/images/inner%203.jpg)
+(frontend/assets/images/inner3.jpg)
+
 
 
 
